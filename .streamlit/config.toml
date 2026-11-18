@@ -1,0 +1,29 @@
+# Tema do Streamlit (caixas de escrita, menus, janelas, listas). Há um claro e um escuro: o Streamlit usa o do
+# sistema e a app põe-no igual à «Cor da aplicação» escolhida nas Definições (identidade.tema_js).
+# As cores são as mesmas de identidade.py (_CLARO e _ESCURO), para os componentes do Streamlit e os da app combinarem.
+[theme]
+primaryColor = "#17798A"
+font = "sans serif"
+showWidgetBorder = true
+baseRadius = "8px"
+
+[theme.light]
+backgroundColor = "#F5F7F7"
+secondaryBackgroundColor = "#EEF2F2"
+textColor = "#14222A"
+borderColor = "#E1E7E6"
+linkColor = "#17798A"
+
+[theme.dark]
+backgroundColor = "#0C1316"
+secondaryBackgroundColor = "#131D21"
+textColor = "#E7EEF0"
+borderColor = "#30424A"
+linkColor = "#45BCCB"
+codeBackgroundColor = "#1A2A30"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false

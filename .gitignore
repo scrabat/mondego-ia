@@ -1,0 +1,17 @@
+# Dados de cada pessoa e segredos: nunca vão para o GitHub nem para outro sítio
+.streamlit/secrets.toml
+config.json
+perfil.json
+avaliacoes.json
+dados/
+backup/
+utilizadores/
+antes_das_contas/
+salas_local.sqlite
+sessoes_lembradas.sqlite
+conta_de_teste_3d.txt
+componentes/mondego/audio/
+componentes/mondego/modelos/
+__pycache__/
+*.pyc
+copia_antes_redesenho_2026-11-14/

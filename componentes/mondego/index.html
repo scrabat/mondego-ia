@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mondego IA</title>
+<!-- Bibliotecas carregadas da CDN (o browser guarda-as em cache depois da primeira vez) -->
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<style>
+  /* as mesmas cores da app (identidade.py); --primario é o fundo dos botões principais (letra branca legível nos
+     dois temas) e --campo o das caixas de escrita */
+  :root { --fundo:#F6F8F7; --cartao:#FFFFFF; --texto:#16232B; --suave:#5A6B70; --linha:#DCE3E1; --acento:#17798A;
+          --acento-claro:#DDF0F1; --bolha:#E8EEED; --primario:#17798A; --primario-hover:#0F6878;
+          --campo:#FFFFFF; --campo-texto:#12202A; --campo-suave:#627378; --borda-campo:#869599; }
+  :root.escuro { --fundo:#0E1519; --cartao:#172328; --texto:#E6EEF0; --suave:#93A6AB; --linha:#2C3D44; --acento:#4CC3D2;
+                 --acento-claro:#12343B; --bolha:#1C2B31; --primario:#17798A; --primario-hover:#0F6878;
+                 --campo:#121D22; --campo-texto:#E6EEF0; --campo-suave:#8D9FA5; --borda-campo:#5B6F76; }
+  input::placeholder { color:var(--campo-suave); }
+  html, body { margin:0; padding:0; background:transparent; color:var(--texto);
+               font-family:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size:14px; }
+  * { box-sizing:border-box; }
+  button, select, input { font:inherit; color:inherit; }
+  .mi-erro { padding:1rem; border:1px solid var(--linha); border-radius:14px; background:var(--cartao); color:var(--texto); }
+  .mi-carregar { display:flex; align-items:center; justify-content:center; gap:0.5rem; height:100%; color:var(--suave); }
+  .mi-pontos i { display:inline-block; width:6px; height:6px; margin:0 2px; border-radius:50%; background:var(--acento);
+                 animation:p 1.2s infinite ease-in-out; }
+  .mi-pontos i:nth-child(2) { animation-delay:.15s } .mi-pontos i:nth-child(3) { animation-delay:.3s }
+  @keyframes p { 0%,80%,100% { opacity:.25 } 40% { opacity:1 } }
+</style>
+</head>
+<body>
+<div id="raiz"></div>
+<script type="module">
+  // Protocolo dos componentes do Streamlit (sem bibliotecas): pronto → render → valor / altura.
+  const Streamlit = {
+    enviar(type, dados) { window.parent.postMessage(Object.assign({ isStreamlitMessage: true, type }, dados), "*"); },
+    pronto() { this.enviar("streamlit:componentReady", { apiVersion: 1 }); },
+    altura(h) { this.enviar("streamlit:setFrameHeight", { height: Math.ceil(h) }); },
+    valor(v) { this.enviar("streamlit:setComponentValue", { value: v, dataType: "json" }); },
+  };
+  const raiz = document.getElementById("raiz");
+  let modulo = null, modoAtual = null, fila = Promise.resolve();
+
+  function aplicarTema(args) {
+    const tema = (args && args.tema) || "Automático";
+    const escuro = tema === "Escuro" || (tema === "Automático" && matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.classList.toggle("escuro", escuro);
+    return escuro;
+  }
+
+  async function render(args) {
+    const escuro = aplicarTema(args);
+    const modo = args.modo;
+    try {
+      if (modo !== modoAtual) {
+        modoAtual = modo;
+        raiz.innerHTML = '<div class="mi-carregar" style="height:' + (args.altura || 300) +
+          'px"><span class="mi-pontos"><i></i><i></i><i></i></span> A carregar…</div>';
+        Streamlit.altura(args.altura || 300);
+        modulo = await import("./" + modo + ".js?v=" + encodeURIComponent(args.versao || ""));
+        raiz.innerHTML = "";
+        await modulo.iniciar(raiz, args, Streamlit, escuro);
+      } else {
+        await modulo.atualizar(args, escuro);
+      }
+    } catch (erro) {
+      console.error(erro);
+      raiz.innerHTML = '<div class="mi-erro"><b>Não foi possível abrir esta ferramenta.</b><br>' +
+        'Verifica a ligação à internet (as bibliotecas 3D e de simulação são carregadas da web).<br><small>' +
+        String(erro && erro.message || erro).replace(/</g, "&lt;") + '</small></div>';
+      Streamlit.altura(140);
+    }
+  }
+
+  window.addEventListener("message", (ev) => {
+    const d = ev.data;
+    // as renderizações são tratadas por ordem (a seguinte espera que a anterior acabe)
+    if (d && d.type === "streamlit:render") fila = fila.then(() => render(d.args || {}));
+  });
+  Streamlit.pronto();
+</script>
+</body>
+</html>
