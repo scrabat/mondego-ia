@@ -531,21 +531,26 @@ div[class*="st-key-pg_vazio_acoes"] { justify-content:center; }
 .mi-sala-ico .material-symbols-rounded { font-variation-settings:'FILL' 1, 'wght' 500; }
 .cd-ico.mi-sala-ico { width:44px; height:44px; border-radius:13px; }
 /* escolhas grandes («Sou aluno»/«Sou professor», «Só para mim»/«Com colegas»): o cartão inteiro escolhe */
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [role="radiogroup"] { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [role="radiogroup"] > div { position:relative; margin:0 !important; padding:0.95rem 1.05rem 1.05rem;
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [role="radiogroup"] { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [role="radiogroup"] > div { position:relative; margin:0 !important; padding:0.95rem 1.05rem 1.05rem;
   border:1px solid var(--linha); border-radius:16px; background:var(--fundo);
   transition:border-color .15s ease, background-color .15s ease, box-shadow .15s ease; }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [role="radiogroup"] > div:hover { border-color:color-mix(in srgb, var(--acento) 55%, var(--linha)); }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [role="radiogroup"] > div:has(input:checked) { border-color:var(--acento);
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [role="radiogroup"] > div:hover { border-color:color-mix(in srgb, var(--acento) 55%, var(--linha)); }
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [role="radiogroup"] > div:has(input:checked) { border-color:var(--acento);
   background:color-mix(in srgb, var(--acento) 8%, var(--fundo)); box-shadow:0 0 0 1px var(--acento); }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [role="radiogroup"] > div:has(input:focus-visible) { outline:2px solid var(--acento); outline-offset:2px; }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [data-testid="stRadioOption"] { margin:0 !important; position:static !important; }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [data-testid="stRadioOption"]::after { content:""; position:absolute; inset:0; border-radius:16px; cursor:pointer; z-index:1; }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [data-testid="stRadioOption"] p { font-size:1.02rem; font-weight:600; color:var(--texto); }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [data-testid="stRadioCaption"] { padding-left:1.75rem; }
-:is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [data-testid="stRadioCaption"] p { font-size:0.86rem !important; line-height:1.45; color:var(--suave) !important;
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [role="radiogroup"] > div:has(input:focus-visible) { outline:2px solid var(--acento); outline-offset:2px; }
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [data-testid="stRadioOption"] { margin:0 !important; position:static !important; }
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [data-testid="stRadioOption"]::after { content:""; position:absolute; inset:0; border-radius:16px; cursor:pointer; z-index:1; }
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [data-testid="stRadioOption"] p { font-size:1.02rem; font-weight:600; color:var(--texto); }
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [data-testid="stRadioCaption"] { padding-left:1.75rem; }
+:is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [data-testid="stRadioCaption"] p { font-size:0.86rem !important; line-height:1.45; color:var(--suave) !important;
   margin:0.15rem 0 0 !important; }
-@media (max-width:640px) { :is(div.st-key-ob_vinculo, div.st-key-cs_tipo) [role="radiogroup"] { grid-template-columns:1fr; } }
+@media (max-width:640px) { :is(div.st-key-ob_vinculo, div.st-key-cs_tipo, div.st-key-ob_onde) [role="radiogroup"] { grid-template-columns:1fr; } }
+div.st-key-ob_onde, div.st-key-ob_onde [data-testid="stRadio"] { width:100% !important; }
+div.st-key-ob_onde [role="radiogroup"] { grid-template-columns:1fr; gap:0.5rem; width:100%; }
+div.st-key-ob_onde [role="radiogroup"] > div { padding:0.7rem 0.95rem 0.75rem; }
+div.st-key-ob_onde [data-testid="stRadioOption"] p { font-size:0.97rem; }
+div.st-key-ob_onde [data-testid="stRadioCaption"] p { font-size:0.82rem !important; }
 /* cor da sala: cada opção com a sua bolinha */
 [class*="st-key-corsala_"] [data-testid="stButtonGroup"] button::before { content:""; width:0.8rem; height:0.8rem; flex:none;
   border-radius:50%; background:var(--c, var(--suave)); box-shadow:inset 0 0 0 1px rgba(0,0,0,0.14); margin-right:0.4rem; }
@@ -2999,16 +3004,42 @@ def _ob_titulo(titulo: str, sub: str = "") -> None:
                 unsafe_allow_html=True)
 
 
-def _ob_instituicao(pergunta: str) -> str | None:
-    e_uc = st.segmented_control(pergunta, [ac.UC, "Outra instituição"], key="ob_inst",
-                                default=ac.UC if acad.get("instituicao", ac.UC) == ac.UC else "Outra instituição") \
-        or (ac.UC if acad.get("instituicao", ac.UC) == ac.UC else "Outra instituição")
-    if e_uc == ac.UC:
-        acad["instituicao"] = ac.UC
-        return None
+# «Onde estudas / ensinas?»: uma só escolha entre três (antes eram duas perguntas, nível de ensino e instituição)
+ONDE = {"uc": (":material/account_balance:", ac.UC),
+        "outra": (":material/school:", "Outra instituição"),
+        "secundario": (":material/menu_book:", "Ensino secundário")}
+
+
+def _ob_onde(prof: bool) -> str:
+    """Universidade de Coimbra, outra instituição do ensino superior ou ensino secundário. Guarda o nível e a
+    instituição (os campos de sempre) e devolve a escolha."""
+    if acad.get("nivel") == "Ensino secundário":
+        atual = "secundario"
+    elif acad.get("instituicao") and acad.get("instituicao") != ac.UC:
+        atual = "outra"
+    else:
+        atual = "uc"
+    legendas = {"uc": "Escolhes os teus departamentos" if prof else "Escolhes o teu grau e o teu curso",
+                "outra": "Outra universidade ou politécnico",
+                "secundario": "Escolhes as disciplinas que dás" if prof else "Do 10.º ao 12.º ano"}
+    escolha = st.radio("Onde ensinas" if prof else "Onde estudas", list(ONDE), index=list(ONDE).index(atual),
+                       format_func=lambda k: f"{ONDE[k][0]} {ONDE[k][1]}", captions=[legendas[k] for k in ONDE],
+                       key="ob_onde", label_visibility="collapsed") or atual
+    if escolha == "secundario":
+        acad["nivel"] = "Ensino secundário"
+    else:
+        acad["nivel"] = "Ensino superior"
+        if escolha == "uc":
+            acad["instituicao"] = ac.UC
+    return escolha
+
+
+def _ob_outra_instituicao() -> str | None:
+    """Qual é a outra instituição do ensino superior (da lista, ou escrita à mão em «Outra»)."""
     outras = [i for i in ac.INSTITUICOES if i != ac.UC]
-    atual = acad.get("instituicao") if acad.get("instituicao") in outras else outras[0]
-    esc = st.selectbox("Qual?", outras, index=outras.index(atual), key="ob_inst_outra")
+    atual = acad.get("instituicao") if acad.get("instituicao") in outras else (
+        "Outra" if acad.get("instituicao_outra") and "Outra" in outras else outras[0])
+    esc = st.selectbox("Instituição", outras, index=outras.index(atual), key="ob_inst_outra")
     if esc != "Outra":
         acad["instituicao"] = esc
         return None
@@ -3016,12 +3047,6 @@ def _ob_instituicao(pergunta: str) -> str | None:
     acad["instituicao_outra"] = nome_inst.strip()
     acad["instituicao"] = nome_inst.strip() or "Outra"
     return None if nome_inst.strip() else "Escreve o nome da instituição."
-
-
-def _ob_nivel(pergunta: str) -> None:
-    opcoes = ["Ensino superior", "Ensino secundário"]
-    atual = acad["nivel"] if acad.get("nivel") in opcoes else opcoes[0]
-    acad["nivel"] = st.segmented_control(pergunta, opcoes, default=atual, key="ob_nivel") or atual
 
 
 def ecra_onboarding(passo_id: str):
@@ -3050,8 +3075,8 @@ def ecra_onboarding(passo_id: str):
             erro = "Escreve o teu nome completo."
     elif passo_id == "estudos":
         _ob_titulo("Onde estudas?", "Para as explicações e os exemplos virem ao teu nível.")
-        _ob_nivel("Nível de ensino")
-        if acad["nivel"] == "Ensino secundário":
+        onde = _ob_onde(prof=False)
+        if onde == "secundario":
             opcoes = ac.AREAS_SECUNDARIO
             base = str(acad.get("area") or "").split(":")[0]
             escolha = st.selectbox("Área ou curso", opcoes, index=opcoes.index(base) if base in opcoes else 0, key="ob_area")
@@ -3065,7 +3090,7 @@ def ecra_onboarding(passo_id: str):
             else:
                 acad["area"] = escolha
         else:
-            erro = _ob_instituicao("Instituição")
+            erro = _ob_outra_instituicao() if onde == "outra" else None
             acad["grau"] = st.selectbox("Grau", ac.GRAUS, index=ac.GRAUS.index(acad["grau"]) if acad.get("grau") in ac.GRAUS else 0,
                                         key="ob_grau")
             lista = ac.cursos_de(acad.get("instituicao", ""), acad.get("grau", ""))
@@ -3086,15 +3111,15 @@ def ecra_onboarding(passo_id: str):
                 erro = "Escolhe ou escreve o teu curso."
     elif passo_id == "ensino":
         _ob_titulo("Onde ensinas?", "Para as turmas e os materiais que preparares virem ao nível certo.")
-        _ob_nivel("Nível de ensino")
-        if acad["nivel"] == "Ensino secundário":
+        onde = _ob_onde(prof=True)
+        if onde == "secundario":
             acad["disciplinas"] = st.multiselect("Disciplinas que dás", ac.DISCIPLINAS_SECUNDARIO, key="ob_disc",
                                                  default=[d for d in acad.get("disciplinas", []) if d in ac.DISCIPLINAS_SECUNDARIO],
                                                  placeholder="Escolhe uma ou mais")
             if not acad["disciplinas"]:
                 erro = "Escolhe pelo menos uma disciplina."
         else:
-            erro = _ob_instituicao("Instituição")
+            erro = _ob_outra_instituicao() if onde == "outra" else None
             if acad.get("instituicao") == ac.UC:
                 acad["departamentos"] = st.multiselect(
                     "Departamentos", ac.DEPARTAMENTOS_UC, key="ob_dep", placeholder="Escolhe um ou mais",
